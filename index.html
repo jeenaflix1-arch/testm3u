@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Player</title>
+    <!-- یہ سکرپٹ براؤزر میں VLC والا کام کرتا ہے -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body style="background-color: black; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+
+    <video id="video" controls autoplay style="width: 80%; max-width: 800px; border: 2px solid #333; rounded: 10px;"></video>
+
+    <script>
+        var video = document.getElementById('video');
+        var videoSrc = 'https://omax.vip/live/strong8492/84920056/356534.m3u8';
+
+        // چیک کریں کہ براؤزر HLS.js سپورٹ کرتا ہے یا نہیں
+        if (Hls.isSupported()) {
+            var hls = new Hls();
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+            });
+        }
+        // سفاری جیسے براؤزرز کے لیے جو ڈائریکٹ سپورٹ کرتے ہیں
+        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = videoSrc;
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+            });
+        }
+    </script>
+
+</body>
+</html>
